@@ -1,18 +1,20 @@
 from uncertainty import app
+from uncertainty import indexes
 
 @app.route('/uncertainty.api/EUI')
 def get_summary_index():
-    pass
+    indexes.summary_index()
 
-@app.route('/uncertainty.api/<area>')
-def get_area_index():
-    pass
+@app.route('/uncertainty.api/<area_name>')
+def get_area_index(area_name):
+    res = indexes.area_index_by_area_name(area_name)
+    return res
 
 @app.route('/uncertainty.api/EUI/date-range')
 def get_summary_index_by_dateRange():
     pass
 
-@app.route('/uncertainty.api/<area>/date-range')
+@app.route('/uncertainty.api/<area_name>/date-range')
 def get_area_index_by_date_range():
     pass
 
