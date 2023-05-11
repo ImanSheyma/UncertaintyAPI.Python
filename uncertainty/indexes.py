@@ -1,15 +1,25 @@
 from uncertainty import models, db
+import pandas as pd
 
 def summary_index():
     areas = db.session.query(models.Economic_area)
+    indexes = dict()
     for area in areas:
-        area_index(area)
+        area_indexes = area_index(area)
+        for date in area_indexes:
+            val = indexes.get(date)
+            if val == None:
+                val = 0
+            indexes.update({date : val + area_indexes.get(date)})
+    ts = pd.DataFrame.from_dict(indexes, orient="index")
+    return ts
 
 
 def area_index_by_area_name(area_name):
     area = db.session.query(models.Economic_area)\
         .where(models.Economic_area.area_name == area_name).first()
-    return area_index(area)
+    indexes = area_index(area)
+    return pd.DataFrame.from_dict(indexes, orient="index")
 
 def area_index(area):
     questions = db.session.query(models.Question).where(models.Question.area_id == area.id).all()

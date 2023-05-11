@@ -1,9 +1,13 @@
 from uncertainty import app
 from uncertainty import indexes
+from uncertainty import statistical_tools as st
 
 @app.route('/uncertainty.api/EUI')
 def get_summary_index():
-    indexes.summary_index()
+    uncertainty_indexes = indexes.summary_index()
+    seas_uncertainty_indexes = st.seasonal_adjustment(uncertainty_indexes.values)
+    print(uncertainty_indexes.values)
+    print(seas_uncertainty_indexes.trend)
 
 @app.route('/uncertainty.api/<area_name>')
 def get_area_index(area_name):
