@@ -1,7 +1,9 @@
 import statsmodels.api as sm
+from statsmodels.tsa.seasonal import seasonal_decompose
 
 def seasonal_adjustment(timeseries):
-    return sm.tsa.seasonal_decompose(timeseries, model='additive', period=12)
+    res = seasonal_decompose(x=timeseries, period=12, extrapolate_trend='freq')
+    return res.trend
 
 def get_trend(timeseries, lambda_value):
     pass

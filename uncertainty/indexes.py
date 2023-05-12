@@ -7,10 +7,10 @@ def summary_index():
     for area in areas:
         area_indexes = area_index(area)
         for date in area_indexes:
-            val = indexes.get(date)
+            val = indexes.get(date.strftime("%Y/%m"))
             if val == None:
                 val = 0
-            indexes.update({date : val + area_indexes.get(date)})
+            indexes.update({date.strftime("%Y/%m") : val + area_indexes.get(date)})
     ts = pd.DataFrame.from_dict(indexes, orient="index")
     return ts
 
