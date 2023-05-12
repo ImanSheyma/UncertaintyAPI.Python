@@ -1,17 +1,23 @@
 from uncertainty import app
+from flask import request
 from uncertainty import indexes
 from uncertainty import statistical_tools as st
 
 @app.route('/uncertainty.api/EUI')
 def get_summary_index():
     uncertainty_indexes = indexes.summary_index()
-    seas_uncertainty_indexes = st.seasonal_adjustment(uncertainty_indexes)
-    return seas_uncertainty_indexes.to_dict()
+    seasonal_adj = request.args.get("seasonal_adj")
+    if seasonal_adj:
+        return st.seasonal_adjustment(uncertainty_indexes).to_dict()
+    return uncertainty_indexes.to_dict()
 
 @app.route('/uncertainty.api/<area_name>')
 def get_area_index(area_name):
-    res = indexes.area_index_by_area_name(area_name)
-    return res
+    area_indexes = indexes.area_index_by_area_name(area_name)
+    seasonal_adj = request.args.get("seasonal_adj")
+    if seasonal_adj:
+        return st.seasonal_adjustment(area_indexes).to_dict()
+    return area_indexes.to_dict()
 
 @app.route('/uncertainty.api/EUI/date-range')
 def get_summary_index_by_dateRange():
