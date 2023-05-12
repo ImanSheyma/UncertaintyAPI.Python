@@ -29,11 +29,13 @@ def get_area_index_by_date_range():
 
 @app.route('/uncertainty.api/EUI/cycle')
 def get_EUI_cycle():
-    pass
+    EUI = indexes.summary_index()
+    return st.get_cycle(EUI).to_dict()
 
-@app.route('/uncertainty.api/<area>/cycle')
-def get_area_cycle():
-    pass
+@app.route('/uncertainty.api/<area_name>/cycle')
+def get_area_cycle(area_name):
+    UI = indexes.area_index_by_area_name(area_name)
+    return st.get_cycle(UI).to_dict()
 
 @app.route('/uncertainty.api/basic')
 def get_basic_economic_index():
